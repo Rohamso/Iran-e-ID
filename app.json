@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "e-ID",
-    "slug": "e-ID",
+    "name": "Iran e-ID",
+    "slug": "iran-e-id",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -9,22 +9,24 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#0B2545"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false,
+      "bundleIdentifier": "org.iran.eid"
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#0B2545",
         "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "backgroundImage": "./assets/android-icon-background.png"
       },
-      "predictiveBackGestureEnabled": false
+      "package": "org.iran.eid"
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    }
+    "plugins": [
+      "expo-secure-store",
+      ["expo-image-picker", { "photosPermission": "Allow Iran e-ID to access your photos." }],
+      ["expo-local-authentication", { "faceIDPermission": "Allow Iran e-ID to use Face ID." }]
+    ]
   }
 }
