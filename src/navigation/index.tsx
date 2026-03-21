@@ -14,7 +14,8 @@ import IdentityScreen   from '../screens/IdentityScreen';
 import VoteScreen       from '../screens/VoteScreen';
 import SettingsScreen   from '../screens/SettingsScreen';
 import AddIdScreen      from '../screens/AddIdScreen';
-import AddPassportScreen from '../screens/AddPassportScreen';
+import AddPassportScreen      from '../screens/AddPassportScreen';
+import AddDrivingLicenseScreen from '../screens/AddDrivingLicenseScreen';
 
 import type { RootStackParamList } from '../types';
 import { colors } from '../theme';
@@ -66,7 +67,8 @@ export function AppNavigator() {
           <>
             <Stack.Screen name="Main"        component={MainTabs} />
             <Stack.Screen name="AddId"       component={AddIdScreen}       options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
-            <Stack.Screen name="AddPassport" component={AddPassportScreen} options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
+            <Stack.Screen name="AddPassport"      component={AddPassportScreen}      options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
+            <Stack.Screen name="AddDrivingLicense" component={AddDrivingLicenseScreen} options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
           </>
         )}
       </Stack.Navigator>

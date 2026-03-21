@@ -2,9 +2,7 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
-import type { NationalIdCard, Passport, VoteChoice, VoteStatus, VoteReceipt } from '../types';
-
-// ─── Storage adapters ───────────────────────────────────────────────
+import type { NationalIdCard, Passport, DrivingLicense, VoteChoice, VoteStatus, VoteReceipt } from '../types';
 
 const asyncStorage = createJSONStorage(() => AsyncStorage);
 
@@ -14,7 +12,7 @@ const secureStorage = createJSONStorage(() => ({
   removeItem: (k: string) => SecureStore.deleteItemAsync(k),
 }));
 
-// ─── Auth store ──────────────────────────────────────────────────────
+// ─── Auth ────────────────────────────────────────────────────────────
 
 interface AuthState {
   pin: string | null;
@@ -47,15 +45,18 @@ export const useAuthStore = create<AuthState>()(
   ),
 );
 
-// ─── Identity store ──────────────────────────────────────────────────
+// ─── Identity ────────────────────────────────────────────────────────
 
 interface IdentityState {
   idCard: NationalIdCard | null;
   passport: Passport | null;
+  drivingLicense: DrivingLicense | null;
   setIdCard: (card: NationalIdCard) => void;
   clearIdCard: () => void;
   setPassport: (passport: Passport) => void;
   clearPassport: () => void;
+  setDrivingLicense: (license: DrivingLicense) => void;
+  clearDrivingLicense: () => void;
   clearAll: () => void;
 }
 
@@ -64,17 +65,20 @@ export const useIdentityStore = create<IdentityState>()(
     (set) => ({
       idCard: null,
       passport: null,
+      drivingLicense: null,
       setIdCard: (card) => set({ idCard: card }),
       clearIdCard: () => set({ idCard: null }),
       setPassport: (passport) => set({ passport }),
       clearPassport: () => set({ passport: null }),
-      clearAll: () => set({ idCard: null, passport: null }),
+      setDrivingLicense: (license) => set({ drivingLicense: license }),
+      clearDrivingLicense: () => set({ drivingLicense: null }),
+      clearAll: () => set({ idCard: null, passport: null, drivingLicense: null }),
     }),
     { name: 'identity', storage: secureStorage },
   ),
 );
 
-// ─── Referendum store ────────────────────────────────────────────────
+// ─── Referendum ──────────────────────────────────────────────────────
 
 interface ReferendumState {
   choice: VoteChoice | null;

@@ -1,8 +1,8 @@
 export interface NationalIdCard {
-  fullName: string;        // Persian
+  fullName: string;
   fullNameLatin: string;
-  idNumber: string;        // 10-digit کد ملی
-  dateOfBirth: string;     // YYYY-MM-DD
+  idNumber: string;
+  dateOfBirth: string;
   fatherName: string;
   placeOfBirth: string;
   gender: 'M' | 'F';
@@ -16,13 +16,26 @@ export interface Passport {
   surname: string;
   givenNames: string;
   passportNumber: string;
-  nationality: string;     // e.g. IRN
+  nationality: string;
   dateOfBirth: string;
   sex: 'M' | 'F';
   expiryDate: string;
   personalNumber?: string;
   mrz1?: string;
   mrz2?: string;
+}
+
+export interface DrivingLicense {
+  fullName: string;
+  fullNameLatin: string;
+  licenseNumber: string;
+  dateOfBirth: string;
+  issueDate: string;
+  expiryDate: string;
+  issuingAuthority: string;
+  categories: string;   // e.g. "A, B, C"
+  placeOfBirth?: string;
+  photoUri?: string;
 }
 
 export type VoteChoice = 'monarchy' | 'republic';
@@ -42,4 +55,5 @@ export type RootStackParamList = {
   Main: undefined;
   AddId: undefined;
   AddPassport: undefined;
+  AddDrivingLicense: undefined;
 };
