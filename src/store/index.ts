@@ -44,11 +44,16 @@ export const useAuthStore = create<AuthState>()(
     {
       name: 'auth',
       storage: asyncStorage,
-      // isUnlocked intentionally excluded — always starts false on every app launch
       partialize: (state) => ({
         pin: state.pin,
         biometricsEnabled: state.biometricsEnabled,
         onboardingDone: state.onboardingDone,
+      }),
+      // Always reset isUnlocked to false regardless of any old stored value
+      merge: (persisted: any, current) => ({
+        ...current,
+        ...persisted,
+        isUnlocked: false,
       }),
     },
   ),
