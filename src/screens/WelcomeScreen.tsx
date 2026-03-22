@@ -1,88 +1,101 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, StatusBar, Dimensions, Image } from 'react-native';
+import { View, Text, StyleSheet, StatusBar, Pressable, Image, I18nManager } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import Animated, { useSharedValue, withDelay, withTiming, useAnimatedStyle } from 'react-native-reanimated';
+import Animated, {
+  useSharedValue, withDelay, withTiming, useAnimatedStyle,
+} from 'react-native-reanimated';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Button } from '../components/Button';
 import { useAuthStore } from '../store';
 import type { RootStackParamList } from '../types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Welcome'>;
 
-const { width } = Dimensions.get('window');
-
 export default function WelcomeScreen({ navigation }: Props) {
   const { onboardingDone } = useAuthStore();
 
-  const logoY = useSharedValue(40);
-  const logoOp = useSharedValue(0);
-  const textOp = useSharedValue(0);
-  const btnOp = useSharedValue(0);
+  const op = useSharedValue(0);
+  const y  = useSharedValue(24);
 
   useEffect(() => {
-    logoY.value = withDelay(100, withTiming(0, { duration: 600 }));
-    logoOp.value = withDelay(100, withTiming(1, { duration: 600 }));
-    textOp.value = withDelay(600, withTiming(1, { duration: 500 }));
-    btnOp.value = withDelay(1000, withTiming(1, { duration: 500 }));
+    op.value = withDelay(120, withTiming(1, { duration: 600 }));
+    y.value  = withDelay(120, withTiming(0, { duration: 600 }));
   }, []);
 
-  const logoStyle = useAnimatedStyle(() => ({ opacity: logoOp.value, transform: [{ translateY: logoY.value }] }));
-  const textStyle = useAnimatedStyle(() => ({ opacity: textOp.value }));
-  const btnStyle = useAnimatedStyle(() => ({ opacity: btnOp.value }));
+  const anim = useAnimatedStyle(() => ({
+    opacity: op.value,
+    transform: [{ translateY: y.value }],
+  }));
+
+  const goNext = () =>
+    navigation.navigate(onboardingDone ? 'SetPin' : 'Onboarding');
 
   return (
-    <LinearGradient colors={['#0B2545', '#1A4F8A', '#0D3560']} style={styles.bg}>
+    <LinearGradient
+      colors={['#25913C', '#00DC2F']}
+      start={{ x: 0, y: 0.5 }}
+      end={{ x: 1, y: 0.5 }}
+      locations={[0.35, 1.0]}
+      style={s.gradient}
+    >
+      <View style={s.overlay} />
       <StatusBar barStyle="light-content" />
 
-      <View style={styles.circles}>
-        <View style={[styles.circle, { width: 280, height: 280, top: -80, right: -60 }]} />
-        <View style={[styles.circle, { width: 180, height: 180, bottom: 120, left: -50 }]} />
-      </View>
+      <SafeAreaView style={s.safe}>
+        <Animated.View style={[s.inner, anim]}>
 
-      <Animated.View style={[styles.center, logoStyle]}>
-        <View style={styles.logoRing}>
-          <Image
-            source={require('../../assets/lion-sun-square.png')}
-            style={styles.logoImg}
-            resizeMode="contain"
-          />
-        </View>
-        <Text style={styles.appName}>Iran e-ID</Text>
-        <Text style={styles.appNameFa}>هویت دیجیتال ایرانیان</Text>
-      </Animated.View>
+          {/* Logo + heading */}
+          <View style={s.top}>
+            <Image
+              source={require('../../assets/lion-sun-transparent.png')}
+              style={s.logo}
+              resizeMode="contain"
+            />
+            <Text style={s.heading}>از تشخیص چهره استفاده کنید</Text>
+          </View>
 
-      <Animated.View style={[styles.middle, textStyle]}>
-        <Text style={styles.headline}>هویت دیجیتال امن شما</Text>
-        <Text style={styles.sub}>
-          کارت ملی و گذرنامه خود را به صورت امن ذخیره کنید.{'\n'}
-          در رفراندم تاریخی ایران رای بدهید.
-        </Text>
-      </Animated.View>
+          {/* Face-scan icon */}
+          <View style={s.middle}>
+            <Pressable onPress={goNext}>
+              <Image
+                source={require('../../assets/face-scan.png')}
+                style={s.faceIcon}
+                resizeMode="contain"
+              />
+            </Pressable>
+          </View>
 
-      <Animated.View style={[styles.bottom, btnStyle]}>
-        <Button
-          label="شروع کنید"
-          variant="gold"
-          onPress={() => navigation.navigate(onboardingDone ? 'SetPin' : 'Onboarding')}
-        />
-        <Text style={styles.disclaimer}>اطلاعات شما رمزگذاری شده و فقط روی دستگاه شما ذخیره می‌شود</Text>
-      </Animated.View>
+          {/* CTA + link */}
+          <View style={s.bottom}>
+            <Pressable style={s.btn} onPress={goNext}>
+              <Text style={s.btnTxt}>ورود با استفاده از تشخیص چهره</Text>
+            </Pressable>
+            <Pressable onPress={goNext}>
+              <Text style={s.altLink}>سایر روش های احراز هویت</Text>
+            </Pressable>
+          </View>
+
+        </Animated.View>
+      </SafeAreaView>
     </LinearGradient>
   );
 }
 
-const styles = StyleSheet.create({
-  bg: { flex: 1, paddingHorizontal: 28, paddingTop: 80, paddingBottom: 52 },
-  circles: { ...StyleSheet.absoluteFillObject },
-  circle: { position: 'absolute', borderRadius: 999, backgroundColor: 'rgba(255,255,255,0.04)' },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  logoRing: { width: 130, height: 130, borderRadius: 65, backgroundColor: 'rgba(201,168,76,0.15)', justifyContent: 'center', alignItems: 'center', borderWidth: 1.5, borderColor: 'rgba(201,168,76,0.5)', marginBottom: 24, overflow: 'hidden' },
-  logoImg: { width: 110, height: 110 },
-  appName: { fontSize: 38, fontWeight: '800', color: '#fff', letterSpacing: 1 },
-  appNameFa: { fontSize: 16, color: 'rgba(255,255,255,0.65)', marginTop: 8 },
-  middle: { alignItems: 'center', marginBottom: 40 },
-  headline: { fontSize: 20, fontWeight: '700', color: '#fff', textAlign: 'center' },
-  sub: { fontSize: 14, color: 'rgba(255,255,255,0.6)', textAlign: 'center', marginTop: 10, lineHeight: 26 },
-  bottom: { gap: 14 },
-  disclaimer: { textAlign: 'center', fontSize: 12, color: 'rgba(255,255,255,0.4)', lineHeight: 20 },
+const s = StyleSheet.create({
+  gradient: { flex: 1 },
+  overlay:  { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(23,23,23,0.57)' },
+  safe:     { flex: 1 },
+  inner:    { flex: 1, alignItems: 'center', paddingHorizontal: 44 },
+
+  top: { alignItems: 'center', paddingTop: 72, paddingBottom: 32 },
+  logo: { width: 125, height: 90 },
+  heading: { color: '#fff', fontSize: 20, fontFamily: 'Vazirmatn-Bold', textAlign: 'center', marginTop: 28 },
+
+  middle: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  faceIcon: { width: 140, height: 140 },
+
+  bottom:  { width: '100%', alignItems: 'center', gap: 24, paddingBottom: 56 },
+  btn:     { width: '100%', backgroundColor: '#32BB4F', borderRadius: 37, paddingVertical: 17, alignItems: 'center' },
+  btnTxt:  { color: '#fff', fontSize: 18, fontFamily: 'Vazirmatn-Bold' },
+  altLink: { color: 'rgba(255,255,255,0.88)', fontSize: 16, fontFamily: 'Vazirmatn-Regular', textDecorationLine: 'underline' },
 });

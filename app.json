@@ -7,9 +7,9 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/lion-sun-transparent.png",
       "resizeMode": "contain",
-      "backgroundColor": "#0B2545"
+      "backgroundColor": "#1D4C27"
     },
     "ios": {
       "supportsTablet": false,
@@ -17,7 +17,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#0B2545",
+        "backgroundColor": "#1D4C27",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png"
       },

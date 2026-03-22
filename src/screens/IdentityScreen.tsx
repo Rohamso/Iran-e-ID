@@ -1,8 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
 import {
-  View, Text, StyleSheet, ScrollView, Pressable, SafeAreaView,
+  View, Text, StyleSheet, ScrollView, Pressable,
   Dimensions, Animated,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useIdentityStore } from '../store';

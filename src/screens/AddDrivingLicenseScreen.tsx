@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Pressable, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, KeyboardAvoidingView, Platform } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -22,7 +23,7 @@ const schema = z.object({
   expiryDate: z.string().min(1),
   issuingAuthority: z.string().min(1),
   categories: z.string().min(1),
-  placeOfBirth: z.string().optional().default(''),
+  placeOfBirth: z.string(),
 });
 type Form = z.infer<typeof schema>;
 
@@ -34,7 +35,7 @@ export default function AddDrivingLicenseScreen({ navigation }: Props) {
   const { setDrivingLicense } = useIdentityStore();
   const { control, handleSubmit, setValue } = useForm<Form>({
     resolver: zodResolver(schema),
-    defaultValues: { categories: '' },
+    defaultValues: { categories: '', placeOfBirth: '' },
   });
 
   const pickPhoto = async () => {
