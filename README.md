@@ -95,6 +95,14 @@ This project follows the mission of the **[Lion & Sun Tech Association](https://
 
 ---
 
+## Product Requirements Document
+
+The full PRD — including vision, feature specs, known gaps, and the v1.1 → v3.0 roadmap — is available here:
+
+[View PRD on CryptPad](https://cryptpad.fr/doc/#/2/doc/view/C87KREzmdespxAvRmTo8F0YGyb9Ol9DhWQmLlRHi1sc/)
+
+---
+
 ## License
 
 MIT
